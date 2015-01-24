@@ -2,6 +2,8 @@
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
+#include "Player.h"
+#include "Platform.h"
 
 class GameScene : public cocos2d::Layer
 {
@@ -14,6 +16,24 @@ public:
         
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
+
+private:
+	void SetPhysicsWorld(PhysicsWorld *world) { sceneWorld = world; };
+
+	//void SpawnPipe(float dt);
+
+	bool onContactBegin(PhysicsContact &contact);
+
+	bool onTouchBegan(Touch *touch, Event * event);
+
+	void StopJumping(float dt);
+	void update(float dt);
+	void spawnPlatform(float dt);
+
+	PhysicsWorld *sceneWorld;
+
+	Player *player;
+	Platform platform;
 };
 
 #endif // __GAME_SCENE_H__
