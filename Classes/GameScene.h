@@ -5,10 +5,12 @@
 #include "Player.h"
 #include "Platform.h"
 
-class GameScene : public cocos2d::Layer
-{
+class GameScene : public cocos2d::Layer{
 public:
-    // there's no 'id' in cpp, so we recommend returning the class instance pointer
+
+	int score;
+
+	// there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
 
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
@@ -18,20 +20,18 @@ public:
     CREATE_FUNC(GameScene);
 
 private:
+    
 	void SetPhysicsWorld(PhysicsWorld *world) { sceneWorld = world; };
-
-	//void SpawnPipe(float dt);
-
 	bool onContactBegin(PhysicsContact &contact);
-
 	bool onTouchBegan(Touch *touch, Event * event);
-
 	void StopJumping(float dt);
 	void update(float dt);
+	cocos2d::Sprite *backgroundSpriteArray[2];
 	void spawnPlatform(float dt);
+    void spawnStartPlatform();
+    void calScore(float dt);
 
 	PhysicsWorld *sceneWorld;
-
 	Player *player;
 	Platform platform;
 };

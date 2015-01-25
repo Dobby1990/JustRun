@@ -336,7 +336,7 @@
   jni/../../cocos2d/cocos/3d/../deprecated/CCBool.h \
   jni/../../cocos2d/cocos/3d/../deprecated/CCNotificationCenter.h \
   jni/../../cocos2d/cocos/3d/../deprecated/CCDeprecated.h \
-  jni/../../Classes/Definations.h
+  jni/../../Classes/Definitions.h
 
 jni/../../Classes/Platform.h:
 
@@ -1012,4 +1012,4 @@ jni/../../cocos2d/cocos/3d/../deprecated/CCNotificationCenter.h:
 
 jni/../../cocos2d/cocos/3d/../deprecated/CCDeprecated.h:
 
-jni/../../Classes/Definations.h:
+jni/../../Classes/Definitions.h:

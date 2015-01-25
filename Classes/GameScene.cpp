@@ -1,17 +1,16 @@
 #include "GameScene.h"
-#include "Definations.h"
+#include "Definitions.h"
+#include "SimpleAudioEngine.h"
+#include "GameOver.h"
 
 USING_NS_CC;
 
-Scene* GameScene::createScene()
-{
+Scene* GameScene::createScene(){
 	auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	scene->getPhysicsWorld()->setGravity(Vect(0, -300));
 	//scene->getPhysicsWorld()->setAutoStep(false);
 
-
-	
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
 	layer->SetPhysicsWorld(scene->getPhysicsWorld());
@@ -24,8 +23,7 @@ Scene* GameScene::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool GameScene::init()
-{
+bool GameScene::init(){
     //////////////////////////////
     // 1. super init first
     if ( !Layer::init() )
@@ -36,12 +34,24 @@ bool GameScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    //Soundtrack preload
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/soundtrack.wav");
 
+    /**
 	auto background = Sprite::create("Background.png");
 	background->setScale(visibleSize.width / background->getContentSize().width, visibleSize.height / background->getContentSize().height);
-	background->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-
+	background->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height/2 + origin.y));
 	this->addChild(background);
+	*/
+
+	////SCROLLING BG/////
+	for (int i = 0; i < 2; i++){
+		backgroundSpriteArray[i] = Sprite::create("background.png");
+		backgroundSpriteArray[i]->setPosition
+		(Point((visibleSize.width) + origin.x, (-1 * visibleSize.height * i) + (visibleSize.height / 2) + origin.y));
+		backgroundSpriteArray[i]->setScale(visibleSize.width * 2 / backgroundSpriteArray[i]->getContentSize().width, visibleSize.height / backgroundSpriteArray[i]->getContentSize().height);
+		this->addChild(backgroundSpriteArray[i], -2);
+	}
 
 	auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 10);
 	edgeBody->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
@@ -51,6 +61,11 @@ bool GameScene::init()
 
 	edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x,visibleSize.height / 2 + origin.y));
 	edgeNode->setPhysicsBody(edgeBody);
+    
+    
+    edgeBody->setDynamic(false);
+
+    
 	this->addChild(edgeNode);
 
 
@@ -65,9 +80,22 @@ bool GameScene::init()
 	touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
 	
-	this->schedule(schedule_selector(GameScene::spawnPlatform), PLATFORM_SPAWN_TIME*visibleSize.width);
 
+    
+	this->schedule(schedule_selector(GameScene::spawnPlatform), PLATFORM_SPAWN_TIME*visibleSize.width);
+    this->schedule(schedule_selector(GameScene::calScore), PLATFORM_SPAWN_TIME*visibleSize.width);
+    
+    this->spawnStartPlatform();
+    
+   // this->addChild(score1);
+
+    
 	this->scheduleUpdate();
+
+
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/soundtrack.wav", true);
+	CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5);
+
     return true;
 }
 
@@ -76,18 +104,16 @@ bool GameScene::onContactBegin(PhysicsContact &contact){
 	PhysicsBody *a = contact.getShapeA()->getBody();
 	PhysicsBody *b = contact.getShapeB()->getBody();
 
-	if ((PLAYER_COLLISION_BITMASK == a->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == b->getCollisionBitmask()
+
+	if ((PLAYER_COLLISION_BITMASK == a->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == b->getCollisionBitmask())
 		||
-		(PLAYER_COLLISION_BITMASK == b->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == a->getCollisionBitmask()))){
+		(PLAYER_COLLISION_BITMASK == b->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == a->getCollisionBitmask())){
 
 		CCLOG("Collided");
-
-		//auto scene = GameOverScene::createScene();
-		//Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+        
+//		auto scene = GameOver::createScene();
+//		Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 	}
-
-
-
 
 	return true;
 }
@@ -110,9 +136,42 @@ void GameScene::StopJumping(float dt){
 
 void GameScene::update(float dt){
 	player->Fall();
-}
 
+	///update scrolling BG
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Point origin = Director::getInstance()->getVisibleOrigin();
+
+	for (int i = 0; i < 2; i++){
+		if (backgroundSpriteArray[i]->getPosition().x <= 0){
+			backgroundSpriteArray[i]->setPosition(
+					Point((visibleSize.width) + getPosition().x, (visibleSize.height / 2)));
+		}
+	}
+	for (int i = 0; i < 2; i++){
+		backgroundSpriteArray[i]->setPosition(
+			Point(	backgroundSpriteArray[i]->getPosition().x - 4.0,
+					backgroundSpriteArray[i]->getPosition().y));
+	}
+
+    if(player->getY() <= player->getSpriteLength().height/6.0) {
+        CCLOG("Collided 1");
+        CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+        auto scene = GameOver::createScene(score);
+        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+    }
+    //update score
+    calScore(0.2);
+}
 
 void GameScene::spawnPlatform(float dt) {
 	platform.spawnPlatform(this);
+}
+
+void GameScene::spawnStartPlatform(){
+    platform.startPlatform(this);
+}
+
+void GameScene::calScore(float dt) {
+    score++;
+    CCLOG("Score: %i", score);
 }

@@ -3,16 +3,21 @@
 
 #include "cocos2d.h"
 USING_NS_CC;
-class Player
-{
+class Player{
+    
 public:
+    
 	Player(Layer *layer);
 
 	void Fall();
 	void Jump() { isJumping = true; };
 	void StopJump() { isJumping = false; };
+    float getX();
+    float getY();
+    Size getSpriteLength();
 
 private:
+    
 	Size visbleSize;
 	Vec2 origin;
 	Sprite *player;

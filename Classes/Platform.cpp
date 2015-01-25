@@ -1,5 +1,5 @@
 #include "Platform.h"
-#include "Definations.h"
+
 
 USING_NS_CC;
 
@@ -7,8 +7,7 @@ USING_NS_CC;
 Platform::Platform() {
     
     visibleSize = Director::getInstance()->getVisibleSize();
-    origin      = Director::getInstance()->getVisibleOrigin();
-
+    origin        = Director::getInstance()->getVisibleOrigin();
 }
 
 void Platform::spawnPlatform(cocos2d::Layer *layer) {
@@ -17,14 +16,24 @@ void Platform::spawnPlatform(cocos2d::Layer *layer) {
     
     //Create images for platforms
     auto topPlatform = Sprite::create("platform.png");
-	auto bottomPlatform = Sprite::create("platform.png");
+    auto bottomPlatform = Sprite::create("platform.png");
     
     
     //Create sprite physics body around platform one/two
     auto topPlatformBody = PhysicsBody::createBox(topPlatform->getContentSize());
     auto bottomPlatformBody = PhysicsBody::createBox(bottomPlatform->getContentSize());
+    
 
+    auto edgeNode = Node::create();
+    
+    edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x,visibleSize.height / 2 + origin.y));
 
+    
+    this->addChild(edgeNode);
+    
+    topPlatformBody->setDynamic(false);
+
+    
     //Random variable for creating variation in height of platforms
     auto random = CCRANDOM_0_1();
     
@@ -33,37 +42,21 @@ void Platform::spawnPlatform(cocos2d::Layer *layer) {
     auto previous = 0.0;
     
     if(checked) {
-     previous = random;
+      previous = random;
     }
+
     
-    if(random <= 0.20) {
+    if(random <= 0.33) {
         random = 0.20;
         checked = false;
     }
-    if(random <= 0.40) {
+    else if(random <= 0.66) {
         random = 0.40;
         checked = false;
     }
-    else if(random <= 60) {
+    else {
         random = 0.60;
         checked = false;
-    }
-    else if(random <= 80) {
-        random = 0.80;
-        checked = false;
-    }
-    else {
-        random = 0.90;
-    }
-    
-    if(random >= previous + 0.30) {
-        random = previous+20;
-    }
-    if(random - previous <=0.10) {
-        random+=0.10;
-    }
-    else if(previous - random >=0.40) {
-        random+=0.10;
     }
 
     
@@ -72,8 +65,11 @@ void Platform::spawnPlatform(cocos2d::Layer *layer) {
     
     auto platform1BotPos = (random*visibleSize.width) + (topPlatform->getContentSize().width/2);
     
-	topPlatformBody->setDynamic(false);
-	bottomPlatformBody->setDynamic(false);
+    auto transBody = (visibleSize.width)+(topPlatform->getContentSize().width/2);
+
+    
+    topPlatformBody->setDynamic(false);
+    bottomPlatformBody->setDynamic(false);
 
     
     //Assign collision physics body to platforms
@@ -84,13 +80,34 @@ void Platform::spawnPlatform(cocos2d::Layer *layer) {
     topPlatform->setPosition(Point(visibleSize.width+topPlatform->getContentSize().width+origin.x, platform1TopPos));
     bottomPlatform->setPosition(Point(visibleSize.width+bottomPlatform->getContentSize().width+origin.x, platform1TopPos));
     
-    auto topPlatformAction = MoveBy::create(PLATFORM_MOVE_SPEED*visibleSize.width, Point(-visibleSize.width*1.85,0));
+    
+    auto topPlatformAction = MoveBy::create((speed*visibleSize.width), Point(-visibleSize.width*1.85,0));
+   
+    if(speed >= 0.002400) {
+        speed-=0.0004;
+    }
+    
+    CCLOG("Speed: %f", speed);
     
     topPlatform->runAction(topPlatformAction);
-    
-    //bottomPlatform->setPosition(Point());
-    
     layer->addChild(topPlatform);
+}
+
+
+void Platform::startPlatform(Layer *layer){
+    
+    auto startPlatform = Sprite::create("platform.png");
+    auto startPlatformBody = PhysicsBody::createBox(startPlatform->getContentSize());
+    
+    startPlatformBody->setDynamic(false);
+    
+    startPlatform->setPhysicsBody(startPlatformBody);
+    
+    startPlatform->setPosition(Point(visibleSize.width - (startPlatform->getContentSize().width / 6) , visibleSize.height / 2 - startPlatform->getContentSize().height));
+    startPlatform->setScaleX(2);
+    auto startPlatformAction = MoveBy::create((speed*visibleSize.width), Point(-visibleSize.width*1.850, 0));
+    startPlatform->runAction(startPlatformAction);
+    layer->addChild(startPlatform);
     
 }
 
