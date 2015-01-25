@@ -336,7 +336,9 @@
   jni/../../cocos2d/cocos/3d/../deprecated/CCBool.h \
   jni/../../cocos2d/cocos/3d/../deprecated/CCNotificationCenter.h \
   jni/../../cocos2d/cocos/3d/../deprecated/CCDeprecated.h \
-  jni/../../Classes/Definitions.h \
+  jni/../../Classes/Definitions.h jni/../../Classes/GameScene.h \
+  jni/../../Classes/Player.h jni/../../Classes/Ufo.h \
+  jni/../../Classes/Platform.h \
   jni/../../cocos2d/cocos/audio/android/../include\SimpleAudioEngine.h \
   jni/../../cocos2d/cocos/audio/android/../include/Export.h
 
@@ -1015,6 +1017,14 @@ jni/../../cocos2d/cocos/3d/../deprecated/CCNotificationCenter.h:
 jni/../../cocos2d/cocos/3d/../deprecated/CCDeprecated.h:
 
 jni/../../Classes/Definitions.h:
+
+jni/../../Classes/GameScene.h:
+
+jni/../../Classes/Player.h:
+
+jni/../../Classes/Ufo.h:
+
+jni/../../Classes/Platform.h:
 
 jni/../../cocos2d/cocos/audio/android/../include\SimpleAudioEngine.h:
 

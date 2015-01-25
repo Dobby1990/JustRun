@@ -103,8 +103,8 @@ void Platform::startPlatform(Layer *layer){
     
     startPlatform->setPhysicsBody(startPlatformBody);
     
-    startPlatform->setPosition(Point(visibleSize.width - (startPlatform->getContentSize().width / 6) , visibleSize.height / 2 - startPlatform->getContentSize().height));
-    startPlatform->setScaleX(2);
+    startPlatform->setPosition(Point(visibleSize.width - (startPlatform->getContentSize().width / 5) , visibleSize.height / 2 - startPlatform->getContentSize().height));
+    startPlatform->setScaleX(3.5);
     auto startPlatformAction = MoveBy::create((speed*visibleSize.width), Point(-visibleSize.width*1.850, 0));
     startPlatform->runAction(startPlatformAction);
     layer->addChild(startPlatform);

@@ -3,11 +3,13 @@
 
 #include "cocos2d.h"
 #include "Player.h"
+#include "Ufo.h"
 #include "Platform.h"
 
 class GameScene : public cocos2d::Layer{
 public:
 
+	unsigned int testScore;
 	int score;
 
 	// there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -26,14 +28,16 @@ private:
 	bool onTouchBegan(Touch *touch, Event * event);
 	void StopJumping(float dt);
 	void update(float dt);
-	cocos2d::Sprite *backgroundSpriteArray[2];
 	void spawnPlatform(float dt);
     void spawnStartPlatform();
     void calScore(float dt);
 
 	PhysicsWorld *sceneWorld;
 	Player *player;
+	Ufo *ufo;
 	Platform platform;
+	Label *scoreLabel;
+	Sprite *backgroundSpriteArray[2];
 };
 
 #endif // __GAME_SCENE_H__

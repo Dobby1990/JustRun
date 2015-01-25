@@ -19,6 +19,7 @@ public:
 
 private:
     static int scorex;
+	void GoToGameScene(cocos2d::Ref *sender);
 };
 
 #endif // __GAME_SCENE_H__

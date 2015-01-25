@@ -7,7 +7,7 @@ USING_NS_CC;
 
 Scene* GameScene::createScene(){
 	auto scene = Scene::createWithPhysics();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	scene->getPhysicsWorld()->setGravity(Vect(0, -300));
 	//scene->getPhysicsWorld()->setAutoStep(false);
 
@@ -70,7 +70,9 @@ bool GameScene::init(){
 
 
 	player = new Player(this);
-	
+	ufo = new Ufo(this);
+	ufo->wiggleUfo(1.0);
+
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -87,8 +89,14 @@ bool GameScene::init(){
     
     this->spawnStartPlatform();
     
-   // this->addChild(score1);
-
+    // this->addChild(score1);
+    // Score label
+    score = 0;
+    testScore = 0;
+    auto *tempScore = __String::createWithFormat("SCORE: %i", testScore);
+    scoreLabel = Label::createWithTTF(tempScore->getCString(), "fonts/Marker Felt.ttf", 50);
+    scoreLabel->setPosition(Point(origin.x + 120, origin.y + visibleSize.height - 80));
+    this->addChild(scoreLabel);
     
 	this->scheduleUpdate();
 
@@ -159,8 +167,11 @@ void GameScene::update(float dt){
         auto scene = GameOver::createScene(score);
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
     }
-    //update score
-    calScore(0.2);
+    //update score and score label
+    calScore(1.0);
+    auto *tempScore = __String::createWithFormat("SCORE: %i", score);
+    scoreLabel->setString(tempScore->getCString());
+    scoreLabel->setPosition(Point(origin.x + 120, origin.y + visibleSize.height - 80));
 }
 
 void GameScene::spawnPlatform(float dt) {

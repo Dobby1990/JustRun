@@ -17,7 +17,7 @@ public:
     CREATE_FUNC(IntroScene);
 private:
     cocos2d::Sprite *backgroundSpriteArray[2];
-	void goToGameScene(float dt);
+	void goToGameScene(cocos2d::Ref *sender);
 };
 
 #endif // __INTRO_SCENE_H__
