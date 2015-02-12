@@ -338,6 +338,7 @@
   jni/../../cocos2d/cocos/3d/../deprecated/CCDeprecated.h \
   jni/../../Classes/Definitions.h jni/../../Classes/GameScene.h \
   jni/../../Classes/Player.h jni/../../Classes/Ufo.h \
+  jni/../../Classes/LavaFloor.h jni/../../Classes/MeatBone.h \
   jni/../../Classes/Platform.h \
   jni/../../cocos2d/cocos/audio/android/../include\SimpleAudioEngine.h \
   jni/../../cocos2d/cocos/audio/android/../include/Export.h
@@ -1023,6 +1024,10 @@ jni/../../Classes/GameScene.h:
 jni/../../Classes/Player.h:
 
 jni/../../Classes/Ufo.h:
+
+jni/../../Classes/LavaFloor.h:
+
+jni/../../Classes/MeatBone.h:
 
 jni/../../Classes/Platform.h:
 
