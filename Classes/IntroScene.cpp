@@ -34,7 +34,7 @@ bool IntroScene::init(){
 
 	////SCROLLING BG/////
 		for (int i = 0; i < 2; i++){
-			backgroundSpriteArray[i] = Sprite::create("background.png");
+			backgroundSpriteArray[i] = Sprite::create("sprites/Background.png");
 			backgroundSpriteArray[i]->setPosition
 			(Point((visibleSize.width) + origin.x, (-1 * visibleSize.height * i) + (visibleSize.height / 2) + origin.y));
 			backgroundSpriteArray[i]->setScale(visibleSize.width * 2 / backgroundSpriteArray[i]->getContentSize().width, visibleSize.height / backgroundSpriteArray[i]->getContentSize().height);
@@ -43,13 +43,13 @@ bool IntroScene::init(){
 	/////////////////AUDIO CODE////////////
 	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Moo.wav");
 
-	auto cow =  Sprite::create("Cow_0.png");
-	auto ship = Sprite::create("ufo.png");
-	auto beam = Sprite::create("tractor_beam.png");
+	auto cow =  Sprite::create("sprites/cow/Cow_0.png");
+	auto ship = Sprite::create("sprites/ufo.png");
+	auto beam = Sprite::create("sprites/tractor_beam.png");
 
 	CCLOG("passed sprite creation");
 
-	cow->setScale(0.5, 0.5);
+	cow->setScale(0.3, 0.3);
 	ship->setScale(0.5, 0.5);
 	beam->setScale(0.5, 1.0);
 
@@ -75,7 +75,7 @@ bool IntroScene::init(){
 
 	void GoToGameScene(cocos2d::Ref *sender);
 
-	auto retryItem = MenuItemImage::create("play.png", "play.png",
+	auto retryItem = MenuItemImage::create("sprites/buttons/play.png", "sprites/buttons/play.png",
 	CC_CALLBACK_1(IntroScene::goToGameScene, this));
 	retryItem->setPosition(Point((visibleSize.width + origin.x) - (retryItem->getContentSize().width / 2), retryItem->getContentSize().height / 2));
 

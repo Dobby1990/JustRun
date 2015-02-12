@@ -15,8 +15,8 @@ void Platform::spawnPlatform(cocos2d::Layer *layer) {
     CCLOG("New platform has spawned.....");
     
     //Create images for platforms
-    auto topPlatform = Sprite::create("platform.png");
-    auto bottomPlatform = Sprite::create("platform.png");
+    auto topPlatform = Sprite::create("sprites/platform.png");
+    auto bottomPlatform = Sprite::create("sprites/platform.png");
     
     
     //Create sprite physics body around platform one/two
@@ -96,7 +96,7 @@ void Platform::spawnPlatform(cocos2d::Layer *layer) {
 
 void Platform::startPlatform(Layer *layer){
     
-    auto startPlatform = Sprite::create("platform.png");
+    auto startPlatform = Sprite::create("sprites/platform.png");
     auto startPlatformBody = PhysicsBody::createBox(startPlatform->getContentSize());
     
     startPlatformBody->setDynamic(false);

@@ -8,8 +8,8 @@ USING_NS_CC;
 Ufo::Ufo(Layer *layer) {
     visibleSize = Director::getInstance()->getVisibleSize();
     origin = Director::getInstance()->getVisibleOrigin();
-    ship = Sprite::create("ufo.png");
-    beam = Sprite::create("tractor_beam.png");
+    ship = Sprite::create("sprites/ufo.png");
+    beam = Sprite::create("sprites/tractor_beam.png");
 
     ship->setScale(0.5, 0.5);
     beam->setScale(0.5, 1.0);

@@ -26,8 +26,7 @@ Scene* GameScene::createScene(){
 bool GameScene::init(){
     //////////////////////////////
     // 1. super init first
-    if ( !Layer::init() )
-    {
+    if ( !Layer::init() ) {
         return false;
     }
     
@@ -37,7 +36,7 @@ bool GameScene::init(){
     //Soundtrack preload
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/soundtrack.wav");
 
-    /**
+    /** STATIC BACKGROUND
 	auto background = Sprite::create("Background.png");
 	background->setScale(visibleSize.width / background->getContentSize().width, visibleSize.height / background->getContentSize().height);
 	background->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height/2 + origin.y));
@@ -46,7 +45,7 @@ bool GameScene::init(){
 
 	////SCROLLING BG/////
 	for (int i = 0; i < 2; i++){
-		backgroundSpriteArray[i] = Sprite::create("background.png");
+		backgroundSpriteArray[i] = Sprite::create("sprites/Background.png");
 		backgroundSpriteArray[i]->setPosition
 		(Point((visibleSize.width) + origin.x, (-1 * visibleSize.height * i) + (visibleSize.height / 2) + origin.y));
 		backgroundSpriteArray[i]->setScale(visibleSize.width * 2 / backgroundSpriteArray[i]->getContentSize().width, visibleSize.height / backgroundSpriteArray[i]->getContentSize().height);
@@ -72,6 +71,8 @@ bool GameScene::init(){
 	player = new Player(this);
 	ufo = new Ufo(this);
 	ufo->wiggleUfo(1.0);
+
+	lavaFloor = new LavaFloor(this);
 
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
@@ -163,10 +164,20 @@ void GameScene::update(float dt){
 
     if(player->getY() <= player->getSpriteLength().height/6.0) {
         CCLOG("Collided 1");
-        CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-        auto scene = GameOver::createScene(score);
-        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+        static int i = 0;
+        if(i != 1){
+        	meatbone = new MeatBone(this, player);
+        	meatbone->spawn(1.0f);
+        	i = 1;
+        }
+
+        if (meatbone->getY() < player->getY()){
+        	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+        	auto scene = GameOver::createScene(score);
+        	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+        }
     }
+
     //update score and score label
     calScore(1.0);
     auto *tempScore = __String::createWithFormat("SCORE: %i", score);

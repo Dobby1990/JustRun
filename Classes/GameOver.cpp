@@ -32,7 +32,7 @@ bool GameOver::init(){
     /////////////////AUDIO CODE////////////
    	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Moo.wav");
  
-    auto background = Sprite::create("GameOverBack.png");
+    auto background = Sprite::create("sprites/GameOverBack.png");
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
@@ -47,7 +47,7 @@ bool GameOver::init(){
 
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Moo.wav");
 
-	auto retryItem = MenuItemImage::create("reload.png", "reload.png",
+	auto retryItem = MenuItemImage::create("sprites/buttons/reload.png", "sprites/buttons/reload.png",
 	CC_CALLBACK_1(GameOver::GoToGameScene, this));
 	retryItem->setScale(0.5,0.5);
 	retryItem->setPosition(Point((visibleSize.width + origin.x) - (retryItem->getContentSize().width / 2), retryItem->getContentSize().height / 2));

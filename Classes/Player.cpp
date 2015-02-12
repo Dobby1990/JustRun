@@ -10,12 +10,12 @@ Player::Player(Layer *layer){
 
 
 	//////////////////////ANIMATION CODE/////////
-	player = Sprite::create("Cow_0.png");
+	player = Sprite::create("sprites/cow/Cow_0.png");
 	Vector<SpriteFrame*> animFrames(3);
 	char str[100] = {0};
 	for(int i = 1; i < 3; i++){
-	    sprintf(str, "Cow_%d.png",i);
-	    auto frame = SpriteFrame::create(str,Rect(0,0,256,256)); //we assume that the sprites' dimentions are 540*540 rectangles.
+	    sprintf(str, "sprites/cow/Cow_%d.png",i);
+	    auto frame = SpriteFrame::create(str,Rect(0,0,540,540)); //we assume that the sprites' dimentions are 540*540 rectangles.
 	    animFrames.pushBack(frame);
 	}
 
@@ -24,12 +24,12 @@ Player::Player(Layer *layer){
 	player->runAction( RepeatForever::create( Animate::create(animation) ));
 	//////////////////ANIMATION CODE/////////
 
-	player->setScale(0.5, 0.5);
+	player->setScale(0.3, 0.3);
 	player->setPosition(Point(visbleSize.width / 2 + origin.x, visbleSize.height / 2 + origin.y));
 
 
 	//auto playerBody = PhysicsBody::createBox((player->getContentSize().width /2) * 0.2);
-	auto playerBody = PhysicsBody::createBox(player->getContentSize() * 0.5);
+	auto playerBody = PhysicsBody::createBox(player->getContentSize() * 0.3);
 	player->setPhysicsBody(playerBody);
     
 
@@ -53,8 +53,8 @@ void Player::Fall(){
 		//////Jump Animation
 		Vector<SpriteFrame*> animFrames(1);
 		char str[100] = {0};
-		sprintf(str, "Cow_3.png");
-		auto frame = SpriteFrame::create(str,Rect(0,0,256,256)); //we assume that the sprites' dimentions are 540*540 rectangles.
+		sprintf(str, "sprites/cow/Cow_3.png");
+		auto frame = SpriteFrame::create(str,Rect(0,0,540,540)); //we assume that the sprites' dimentions are 540*540 rectangles.
 		animFrames.pushBack(frame);
 		auto animation = Animation::createWithSpriteFrames(animFrames, 0.4f);
 		auto animate = Animate::create(animation);

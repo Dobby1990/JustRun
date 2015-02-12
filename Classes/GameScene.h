@@ -4,6 +4,8 @@
 #include "cocos2d.h"
 #include "Player.h"
 #include "Ufo.h"
+#include "LavaFloor.h"
+#include "MeatBone.h"
 #include "Platform.h"
 
 class GameScene : public cocos2d::Layer{
@@ -21,6 +23,7 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
 
+
 private:
     
 	void SetPhysicsWorld(PhysicsWorld *world) { sceneWorld = world; };
@@ -35,6 +38,8 @@ private:
 	PhysicsWorld *sceneWorld;
 	Player *player;
 	Ufo *ufo;
+	LavaFloor *lavaFloor;
+	MeatBone *meatbone;
 	Platform platform;
 	Label *scoreLabel;
 	Sprite *backgroundSpriteArray[2];
